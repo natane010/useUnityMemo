@@ -1,0 +1,2 @@
+Get_Start_Unity\Assets\Other\Standard Assets\Vehicles\Aircraft\Textures
+の中の2種のみ５ｍで圧縮　７ｚ使用
