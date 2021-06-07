@@ -1,2 +1,6 @@
 Get_Start_Unity\Assets\Other\Standard Assets\Vehicles\Aircraft\Textures
 の中の2種のみ５ｍで圧縮　７ｚ使用
+
+zip圧縮ファイル
+Get_Start_Unity\Library\metadata\0a
+3b 4e 5b c7 a2 d3 f7 metaデータも７ｚ使用
