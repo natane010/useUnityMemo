@@ -5,7 +5,7 @@ using UnityEngine;
 /// <summary>
 /// 最初は気にしないでいい範囲
 /// </summary>
-public enum PlayerToUseToMove
+public enum ProgramsUsedPlayer
 {
     RigidBody,
     TransForm,
@@ -23,9 +23,9 @@ public class Player : MonoBehaviour
     /// ほかで書き換えられるようにしてるだけ気にしないで
     /// </summary>
     [Header("何で動かすか選択※まだCharactorControllerとNaviMeshは未追加"), SerializeField]
-    private PlayerToUseToMove movePlayerState;
+    private ProgramsUsedPlayer movePlayerState;
 
-    public PlayerToUseToMove MovePlayerState
+    public ProgramsUsedPlayer MovePlayerState
     {
         get { return movePlayerState; }
         set { movePlayerState = value; }
@@ -74,8 +74,13 @@ public class Player : MonoBehaviour
 
     //--------------------------------------
     Vector3 moveDir = Vector3.zero;
+    [Header("CharactorControllerで使う重力の大きさ"), SerializeField, Range(0.0f, 100.0f)]
+    private float gravity = 20.0f;
+    /// <summary>
+    /// キャラクターコントローラーの宣言
+    /// </summary>
+    private CharacterController characterController;
 
-    // Start is called before the first frame update
     void Start()
     {
         if (onMove)
@@ -90,10 +95,15 @@ public class Player : MonoBehaviour
         {
             attack = GetComponent<Attack>();
         }
+        if (movePlayerState == ProgramsUsedPlayer.CharactorController)
+        {
+            Destroy(playerRb);
+            characterController = GetComponent<CharacterController>();
+        }
     }
 
     /// <summary>
-    /// 難しく言うと毎フレーム行われる処理を書く場所Unityでは基本的に計算をここでやる
+    /// 難しく言うと毎フレーム行われる処理を書く場所 Unityでは基本的に計算をここでやる
     /// </summary>
     void Update()
     {
@@ -127,30 +137,40 @@ public class Player : MonoBehaviour
         }
     }
     /// <summary>
-    /// Updateの後に必ず来る処理基本的にここで物理的な処理を行うことが多い
+    /// Updateの後に必ず来る処理 基本的にここで物理的な処理を行うことが多い
     /// </summary>
     void FixedUpdate()
     {
         if (Input.GetKeyDown(jumpKey) && onJump)
         {
-            if (movePlayerState == PlayerToUseToMove.RigidBody)
+            if (movePlayerState == ProgramsUsedPlayer.RigidBody)
             {
                 jump.JumpRb(jumpPow, playerRb);
             }
-            else if (movePlayerState == PlayerToUseToMove.TransForm)
+            else if (movePlayerState == ProgramsUsedPlayer.CharactorController)
             {
-                jump.JumpTransForm(jumpPow, playerRb, player);
+                moveDir += jump.JumpCharacterController(characterController, jumpPow);
             }
         }
         if (onMove)
         {
-            if (movePlayerState == PlayerToUseToMove.RigidBody)
+            if (movePlayerState == ProgramsUsedPlayer.RigidBody)
             {
                 move.MoveRigidBody(moveDir, moveSpeed, playerRb);
             }
-            else if (movePlayerState == PlayerToUseToMove.TransForm)
+            else if (movePlayerState == ProgramsUsedPlayer.TransForm)
             {
                 move.MoveTransform(moveDir, player, moveSpeed);
+            }
+            else if (movePlayerState == ProgramsUsedPlayer.CharactorController)
+            {
+                //CharacterControllerでは重力適応されないため重力をかけてあげなければならない
+                if (!characterController.isGrounded)
+                {
+                    moveDir.y -= gravity * Time.deltaTime;
+                }
+
+                move.PlayerCharacterController(characterController, moveDir, moveSpeed);
             }
         }
     }

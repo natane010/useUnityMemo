@@ -360,6 +360,7 @@ GameObject:
   - component: {fileID: 2024812028}
   - component: {fileID: 2024812027}
   - component: {fileID: 2024812035}
+  - component: {fileID: 2024812036}
   m_Layer: 0
   m_Name: Cube
   m_TagString: Untagged
@@ -415,20 +416,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b4df60a93ccb294799782c8b048ada4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movePlayerState: 1
+  movePlayerState: 2
   onMove: 1
   onJump: 1
   onAttack: 0
   player: {fileID: 2024812026}
   bullet: {fileID: 0}
   playerRb: {fileID: 2024812035}
-  moveSpeed: 1000
+  moveSpeed: 50
   jumpPow: 32
   up: 119
   down: 115
   right: 100
   left: 97
   jumpKey: 32
+  gravity: 50
 --- !u!65 &2024812031
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -517,3 +519,21 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!143 &2024812036
+CharacterController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2024812026}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Height: 1
+  m_Radius: 0.5
+  m_SlopeLimit: 45
+  m_StepOffset: 0.3
+  m_SkinWidth: 0.08
+  m_MinMoveDistance: 0.001
+  m_Center: {x: 0, y: 0, z: 0}

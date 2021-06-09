@@ -14,17 +14,10 @@ public class Jump : MonoBehaviour
         rb.AddForce(0, jumpPow, 0, ForceMode.Impulse);
     }
 
-    /// <summary>
-    /// プレイヤーの位置を無理やり変えてジャンプするプログラム
-    /// </summary>
-    /// <param name="jumpPow">ジャンプ力</param>
-    /// <param name="rb">プレイヤーのRigidbody</param>
-    /// <param name="player">プレイヤーのオブジェクト</param>
-    public void JumpTransForm(float jumpPow, Rigidbody rb, GameObject player)
+    public Vector3 JumpCharacterController(CharacterController controller, float jumpPow)
     {
-        Vector3 holdingSpeed = rb.velocity;
-        Vector3 jumpVector = Vector3.up * jumpPow;
-        Vector3 moveDir = (jumpVector + holdingSpeed);
-        player.transform.position += moveDir * Time.deltaTime;
+        Vector3 jumpMove;
+        jumpMove = new Vector3(0, jumpPow, 0);
+        return jumpMove;
     }
 }

@@ -35,4 +35,17 @@ public class Move : MonoBehaviour
             playerRb.AddForce(movePos, ForceMode.Force);
         }
     }
+
+    /// <summary>
+    /// CharacterControllerで動かす移動方法
+    /// </summary>
+    /// <param name="controller">どのコントローラーか</param>
+    /// <param name="moveDir">移動方向</param>
+    /// <param name="movePow">移動力</param>
+    public void PlayerCharacterController(CharacterController controller, Vector3 moveDir, float movePow)
+    {
+        moveDir.x *= movePow;
+        moveDir.z *= movePow;
+        controller.Move(moveDir * Time.deltaTime);
+    }
 }
