@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 /// <summary>
 /// 動かすプログラム（ナビメッシュ、キャラコンなどは暇があったら追加しときます。）
 /// </summary>
@@ -47,5 +48,14 @@ public class Move : MonoBehaviour
         moveDir.x *= movePow;
         moveDir.z *= movePow;
         controller.Move(moveDir * Time.deltaTime);
+    }
+
+    public void PlayerNavMesh(NavMeshAgent navMeshAgent, Vector3 targetpos, Animator animator, float speed)
+    {
+        navMeshAgent.SetDestination(targetpos);
+        if (animator != null)
+        {
+            animator.SetFloat("speed", speed);
+        }
     }
 }
