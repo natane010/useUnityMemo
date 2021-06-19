@@ -376,8 +376,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   movePlayerState: 3
-  onMove: 1
-  onAnimator: 1
+  onMove: 0
+  onAnimator: 0
   onJump: 0
   onAttack: 0
   bullet: {fileID: 0}
