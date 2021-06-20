@@ -79,7 +79,7 @@ public class Player : MonoBehaviour
     GameObject bullet = null;
 
 
-    Rigidbody playerRb = null;
+    public Rigidbody playerRb = null;
 
     [Header("移動スピードやジャンプ力の設定"), SerializeField, Range(0.0f, 1000.0f)]
     float moveSpeed;
@@ -147,6 +147,7 @@ public class Player : MonoBehaviour
     /// </summary>
     void Start()
     {
+        playerRb = this.gameObject.AddComponent<Rigidbody>();
         if (onMove)
         {
             move = this.gameObject.AddComponent<Move>();
@@ -161,12 +162,14 @@ public class Player : MonoBehaviour
         }
         if (movePlayerState == ProgramsUsedPlayer.CharactorController)
         {
+            Destroy(playerRb);
             characterController = this.gameObject.AddComponent<CharacterController>();
         }
         if (movePlayerState == ProgramsUsedPlayer.NaviMesh)
         {
             terrainNavi.SetNavMesh();
         }
+        
     }
 
     /// <summary>
