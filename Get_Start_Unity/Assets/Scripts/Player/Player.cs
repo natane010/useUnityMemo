@@ -133,7 +133,7 @@ public class Player : MonoBehaviour
         {
             terrainNavi = this.gameObject.AddComponent<TerrainNaviMeshBake>();
             navMeshAgent = this.gameObject.AddComponent<NavMeshAgent>();
-            //navMeshSurface = this.gameObject.AddComponent<NavMeshSurface>();
+            navMeshSurface = this.gameObject.AddComponent<NavMeshSurface>();
             terrainNavi.SetNavMeshComponent();
             if (onAnimator)
             {
