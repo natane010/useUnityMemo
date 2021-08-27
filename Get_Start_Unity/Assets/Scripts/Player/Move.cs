@@ -55,7 +55,7 @@ public class Move : MonoBehaviour
         navMeshAgent.SetDestination(targetpos);
         if (animator != null)
         {
-            animator.SetFloat("speed", speed);
+            //animator.SetFloat("speed", speed);
         }
     }
 }

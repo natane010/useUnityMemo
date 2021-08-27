@@ -100,6 +100,7 @@ public class Player : MonoBehaviour
 
     //--------------------------------------
     Vector3 moveDir = Vector3.zero;
+    Vector3 gameDir;
 
     public bool bGround;
 
@@ -138,7 +139,7 @@ public class Player : MonoBehaviour
             if (onAnimator)
             {
                 navmeshAnimator = this.gameObject.AddComponent<Animator>();
-                navmeshAnimator.SetFloat("speed", 0f);
+                //navmeshAnimator.SetFloat("speed", 0f);
             }
         }
     }
@@ -206,10 +207,6 @@ public class Player : MonoBehaviour
         {
             attack.NoAnimationAttack(this.gameObject, bullet);
         }
-        if (movePlayerState == ProgramsUsedPlayer.NaviMesh)
-        {
-            targetObjPosition = (this.gameObject.transform.position + moveDir) * navMeshFloat;
-        }
     }
     /// <summary>
     /// Updateの後に必ず来る処理 基本的にここで物理的な処理を行うことが多い
@@ -233,13 +230,19 @@ public class Player : MonoBehaviour
         }
         if (onMove)
         {
+            // カメラの方向から、X-Z平面の単位ベクトルを取得
+            Vector3 cameraForward = Vector3.Scale(Camera.main.transform.forward, new Vector3(1, 0, 1)).normalized;
+
+            // 方向キーの入力値とカメラの向きから、移動方向を決定
+            Vector3 moveForward = cameraForward * moveDir.z + Camera.main.transform.right * moveDir.x;
+
             if (movePlayerState == ProgramsUsedPlayer.RigidBody)
             {
-                move.MoveRigidBody(moveDir, moveSpeed, playerRb);
+                move.MoveRigidBody(moveForward, moveSpeed, playerRb);
             }
             else if (movePlayerState == ProgramsUsedPlayer.TransForm)
             {
-                move.MoveTransform(moveDir, this.gameObject, moveSpeed);
+                move.MoveTransform(moveForward, this.gameObject, moveSpeed);
             }
             else if (movePlayerState == ProgramsUsedPlayer.CharactorController)
             {
@@ -249,10 +252,11 @@ public class Player : MonoBehaviour
                     moveDir.y -= gravity * Time.deltaTime;
                 }
 
-                move.PlayerCharacterController(characterController, moveDir, moveSpeed);
+                move.PlayerCharacterController(characterController, moveForward, moveSpeed);
             }
             else if (movePlayerState == ProgramsUsedPlayer.NaviMesh)
             {
+                targetObjPosition = (this.gameObject.transform.position + moveForward) * navMeshFloat;
                 move.PlayerNavMesh(navMeshAgent, targetObjPosition, navmeshAnimator, moveSpeed);
             }
         }
